@@ -1,5 +1,6 @@
 var background, sidewalk, igor, pie, trash,
-    jumping, jumpDir, stage = new PIXI.Container();
+    jumping, jumpDir, score = 0, scoreDisplay,
+    stage = new PIXI.Container(),
     renderer = PIXI.autoDetectRenderer(960, 400);
 
 // add canvas to body
@@ -26,12 +27,12 @@ function triggerJump() {
 // jump event
 function jump() {
   if (jumpDir==='up') {
-    igor.y -= 5;
-    if (igor.y===120) jumpDir = 'down';
+    igor.y -= 7;
+    if (igor.y===80) jumpDir = 'down';
   }
 
   if (jumpDir==='down') {
-    igor.y += 5;
+    igor.y += 7;
     if (igor.y===220) jumping = false;
   }
 }
@@ -77,11 +78,15 @@ function setup() {
   sidewalk = createTilingSprite('assets/sidewalk.jpg', 0, 370);
   sidewalk.scale.set(1, 0.07);
 
-  igor = createSprite('assets/igor.png', 10, 220);
+  igor = createSprite('assets/igor.png', 30, 220);
   igor.scale.set(0.8, 0.8);
 
   pie = createSprite('assets/pie.png', getRandomNum(1000, 2000), 60);
   trash = createSprite('assets/trash.png', getRandomNum(2000, 3000), 220);
+
+  scoreDisplay = new PIXI.Text("Pies: " + score, {font: "18px sans-serif", fill: "white"});
+  scoreDisplay.position.set(850, 10);
+  stage.addChild(scoreDisplay);
 
   // start render loop
   gameLoop();
@@ -89,11 +94,11 @@ function setup() {
 
 // game state update
 function play() {
-  background.tilePosition.x -= 1;
-  sidewalk.tilePosition.x -= 7;
+  background.tilePosition.x -= 4;
+  sidewalk.tilePosition.x -= 15;
 
-  pie.x -= 6;
-  trash.x -=7;
+  pie.x -= 15;
+  trash.x -=15;
 
   if (pie.x < -200) pie.x = getRandomNum(1000, 2000);
   if (trash.x < -200) trash.x = getRandomNum(2000, 3000);
@@ -102,6 +107,8 @@ function play() {
 
   if (colliding(igor, pie)) {
     pie.x = getRandomNum(1000, 2000);
+    score +=1;
+    scoreDisplay.text = "Pies: " + score;
   }
 }
 
