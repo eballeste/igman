@@ -1,6 +1,8 @@
 var background, sidewalk, igor, pie, trash,
     jumping, jumpDir, score = 0, scoreDisplay,
     stage = new PIXI.Container(),
+    gameScreen = new PIXI.Container(),
+    gameOverScreen = new PIXI.Container(),
     renderer = PIXI.autoDetectRenderer(960, 400);
 
 // add canvas to body
@@ -43,7 +45,7 @@ function createTilingSprite(assetPath, xPos, yPos) {
   var tilingSprite = new PIXI.extras.TilingSprite(texture, texture.baseTexture.width, texture.baseTexture.height);
   tilingSprite.x = xPos;
   tilingSprite.y = yPos;
-  stage.addChild(tilingSprite);
+  gameScreen.addChild(tilingSprite);
   return tilingSprite;
 }
 
@@ -52,7 +54,7 @@ function createSprite(assetPath, xPos, yPos) {
   var sprite = new PIXI.Sprite(texture);
   sprite.x = xPos;
   sprite.y = yPos;
-  stage.addChild(sprite);
+  gameScreen.addChild(sprite);
   return sprite;
 }
 
@@ -60,11 +62,12 @@ function getRandomNum(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
+// NOTE: width/3 and height/3 to tighten up hitboxes
 function colliding(a, b) {
   var xDiff = a.position.x - b.position.x;
-  if(xDiff > -a.width/2 && xDiff < a.width/2) {
+  if(xDiff > -a.width/3 && xDiff < a.width/3) {
     var yDiff = a.position.y - b.position.y;
-    if(yDiff > -a.height/2 && yDiff < a.height/2)	{
+    if(yDiff > -a.height/3 && yDiff < a.height/3)	{
   		return true;
     }
   }
@@ -72,6 +75,14 @@ function colliding(a, b) {
 
 // setup game scene
 function setup() {
+  stage.addChild(gameScreen);
+  stage.addChild(gameOverScreen);
+
+  gameOverText = new PIXI.Text("GAME OVER", {font: "18px sans-serif", fill: "white"});
+  gameOverText.position.set(420, 180);
+  gameOverScreen.addChild(gameOverText);
+  gameOverScreen.visible = false;
+
   background = createTilingSprite('assets/background.jpg', 0, -70);
   background.scale.set(0.6, 0.6);
 
@@ -86,7 +97,7 @@ function setup() {
 
   scoreDisplay = new PIXI.Text("Pies: " + score, {font: "18px sans-serif", fill: "white"});
   scoreDisplay.position.set(850, 10);
-  stage.addChild(scoreDisplay);
+  gameScreen.addChild(scoreDisplay);
 
   // start render loop
   gameLoop();
@@ -110,6 +121,10 @@ function play() {
     score +=1;
     scoreDisplay.text = "Pies: " + score;
   }
+
+  if (colliding(igor, trash)) {
+    gameOver();
+  }
 }
 
 // rendering loop
@@ -117,4 +132,13 @@ function gameLoop() {
   requestAnimationFrame(gameLoop);
   play();
   renderer.render(stage);
+}
+
+function gameOver() {
+  totalPiesText = new PIXI.Text("TOTAL PIES: " + score, {font: "18px sans-serif", fill: "white"});
+  totalPiesText.position.set(415, 210);
+  gameOverScreen.addChild(totalPiesText);
+
+  gameScreen.visible = false;
+  gameOverScreen.visible = true;
 }
