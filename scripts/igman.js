@@ -59,6 +59,16 @@ function getRandomNum(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
+function colliding(a, b) {
+  var xDiff = a.position.x - b.position.x;
+  if(xDiff > -a.width/2 && xDiff < a.width/2) {
+    var yDiff = a.position.y - b.position.y;
+    if(yDiff > -a.height/2 && yDiff < a.height/2)	{
+  		return true;
+    }
+  }
+}
+
 // setup game scene
 function setup() {
   background = createTilingSprite('assets/background.jpg', 0, -70);
@@ -70,7 +80,7 @@ function setup() {
   igor = createSprite('assets/igor.png', 10, 220);
   igor.scale.set(0.8, 0.8);
 
-  pie = createSprite('assets/pie.png', getRandomNum(1000, 2000), 90);
+  pie = createSprite('assets/pie.png', getRandomNum(1000, 2000), 60);
   trash = createSprite('assets/trash.png', getRandomNum(2000, 3000), 220);
 
   // start render loop
@@ -89,6 +99,10 @@ function play() {
   if (trash.x < -200) trash.x = getRandomNum(2000, 3000);
 
   if (jumping) jump();
+
+  if (colliding(igor, pie)) {
+    pie.x = getRandomNum(1000, 2000);
+  }
 }
 
 // rendering loop
