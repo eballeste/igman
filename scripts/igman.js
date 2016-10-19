@@ -1,5 +1,5 @@
 var background, sidewalk, igor, pie, trash,
-    jumping, jumpDir, score = 0, scoreDisplay,
+    jumping, jumpDir, score = 0, scoreDisplay, scoreText,
     stage = new PIXI.Container(),
     gameScreen = new PIXI.Container(),
     gameOverScreen = new PIXI.Container(),
@@ -14,7 +14,11 @@ var loader = PIXI.loader.add([
   'assets/sidewalk.jpg',
   'assets/igor.png',
   'assets/pie.png',
-  'assets/trash.png'
+  'assets/trash.png',
+  'assets/game-over/game-over.png',
+  'assets/game-over/total.png',
+  'assets/game-over/restart.png',
+  'assets/pie-score.png'
 ]).load(setup);
 
 // keyboard listener
@@ -78,25 +82,35 @@ function setup() {
   stage.addChild(gameScreen);
   stage.addChild(gameOverScreen);
 
-  gameOverText = new PIXI.Text("GAME OVER", {font: "18px sans-serif", fill: "white"});
-  gameOverText.position.set(420, 180);
+  // game over screen
+  var gameOverText = createSprite('assets/game-over/game-over.png', 392.5, 135);
+  var total = createSprite('assets/game-over/total.png', 372.5, 185);
+  scoreText = new PIXI.Text('', {fontFamily : 'sans-serif', fontSize: 32, fill : 0xffffff, align : 'center'});
+  scoreText.position.set(560, 185);
+  var gameOverPie = createSprite('assets/pie.png', 390, 82);
+  var restart = createSprite('assets/game-over/restart.png', 277.5, 235);
   gameOverScreen.addChild(gameOverText);
+  gameOverScreen.addChild(total);
+  gameOverScreen.addChild(scoreText);
+  gameOverScreen.addChild(gameOverPie);
+  gameOverScreen.addChild(restart);
   gameOverScreen.visible = false;
 
+  // game assets
   background = createTilingSprite('assets/background.jpg', 0, -70);
   background.scale.set(0.6, 0.6);
-
   sidewalk = createTilingSprite('assets/sidewalk.jpg', 0, 370);
   sidewalk.scale.set(1, 0.07);
-
   igor = createSprite('assets/igor.png', 30, 220);
   igor.scale.set(0.8, 0.8);
-
   pie = createSprite('assets/pie.png', getRandomNum(1000, 2000), 60);
   trash = createSprite('assets/trash.png', getRandomNum(2000, 3000), 220);
 
-  scoreDisplay = new PIXI.Text("Pies: " + score, {font: "18px sans-serif", fill: "white"});
-  scoreDisplay.position.set(850, 10);
+  // pie score display
+  var pieText = createSprite('assets/pie-score.png', 820, 10);
+  scoreDisplay = new PIXI.Text(score, {font: "38px sans-serif", fill: "white"});
+  scoreDisplay.position.set(910, 7);
+  gameScreen.addChild(pieText);
   gameScreen.addChild(scoreDisplay);
 
   // start render loop
@@ -119,7 +133,7 @@ function play() {
   if (colliding(igor, pie)) {
     pie.x = getRandomNum(1000, 2000);
     score +=1;
-    scoreDisplay.text = "Pies: " + score;
+    scoreDisplay.text =  score;
   }
 
   if (colliding(igor, trash)) {
@@ -135,9 +149,7 @@ function gameLoop() {
 }
 
 function gameOver() {
-  totalPiesText = new PIXI.Text("TOTAL PIES: " + score, {font: "18px sans-serif", fill: "white"});
-  totalPiesText.position.set(415, 210);
-  gameOverScreen.addChild(totalPiesText);
+  scoreText.setText('x ' + score);
 
   gameScreen.visible = false;
   gameOverScreen.visible = true;
