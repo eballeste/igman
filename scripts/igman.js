@@ -1,5 +1,6 @@
 var background, sidewalk, igor, pie, trash,
-    jumping, jumpDir, score = 0, scoreDisplay, scoreText,
+    jumping, jumpDir, score = 0, scoreDisplay,
+    scoreText, restart, state, blinkTimer = 0,
     stage = new PIXI.Container(),
     gameScreen = new PIXI.Container(),
     gameOverScreen = new PIXI.Container(),
@@ -23,7 +24,13 @@ var loader = PIXI.loader.add([
 
 // keyboard listener
 window.addEventListener('keydown', function(e) {
-  if (e.keyCode===32) {if (!jumping) triggerJump();}
+  if (e.keyCode===32) {
+    if (state==gameOver) {
+      reset();
+    } else {
+      if (!jumping) triggerJump();
+    }
+  }
 });
 // start jump sequence
 function triggerJump() {
@@ -88,7 +95,7 @@ function setup() {
   scoreText = new PIXI.Text('', {fontFamily : 'sans-serif', fontSize: 32, fill : 0xffffff, align : 'center'});
   scoreText.position.set(560, 185);
   var gameOverPie = createSprite('assets/pie.png', 390, 82);
-  var restart = createSprite('assets/game-over/restart.png', 277.5, 235);
+  restart = createSprite('assets/game-over/restart.png', 277.5, 235);
   gameOverScreen.addChild(gameOverText);
   gameOverScreen.addChild(total);
   gameOverScreen.addChild(scoreText);
@@ -114,7 +121,26 @@ function setup() {
   gameScreen.addChild(scoreDisplay);
 
   // start render loop
+  state = play;
   gameLoop();
+}
+
+// reset game from gameOverScreen
+function reset() {
+  gameOverScreen.visible = false;
+  gameScreen.visible = true;
+  score = 0;
+  scoreDisplay.text =  score;
+  pie.x = getRandomNum(1000, 2000);
+  trash.x = getRandomNum(2000, 3000);
+  state = play;
+}
+
+function setGameOver() {
+  scoreText.setText('x ' + score);
+  gameScreen.visible = false;
+  gameOverScreen.visible = true;
+  state = gameOver;
 }
 
 // game state update
@@ -137,20 +163,26 @@ function play() {
   }
 
   if (colliding(igor, trash)) {
-    gameOver();
+    setGameOver();
   }
+}
+
+// game over screen animation loop
+function gameOver() {
+  blinkTimer += 1;
+
+  if (blinkTimer > 30) {
+    restart.visible = false;
+  } else {
+    restart.visible = true;
+  }
+
+  if (blinkTimer > 60) blinkTimer = 1;
 }
 
 // rendering loop
 function gameLoop() {
   requestAnimationFrame(gameLoop);
-  play();
+  state();
   renderer.render(stage);
-}
-
-function gameOver() {
-  scoreText.setText('x ' + score);
-
-  gameScreen.visible = false;
-  gameOverScreen.visible = true;
 }
