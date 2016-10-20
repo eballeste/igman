@@ -1,0 +1,14 @@
+{
+  "name": "igman",
+  "version": "1.0.0-alpha",
+  "private": true,
+  "author": "Deron Johnson",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deronjohnson/igman.git"
+  },
+  "devDependencies": {
+    "browser-sync": "^2.17.5",
+    "gulp": "^3.9.1"
+  }
+}
