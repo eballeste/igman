@@ -107,10 +107,11 @@ function setup() {
   background.scale.set(0.6, 0.6);
   sidewalk = createTilingSprite('assets/sidewalk.jpg', 0, 370);
   sidewalk.scale.set(1, 0.07);
-  igor = createSprite('assets/igor.png', 30, 220);
+  igor = createSprite('assets/igor.png', 30, 250);
   igor.scale.set(0.8, 0.8);
-  pie = createSprite('assets/pie.png', getRandomNum(1000, 2000), 60);
-  trash = createSprite('assets/trash.png', getRandomNum(2000, 3000), 220);
+
+  pie = createSprite('assets/pie.png', getRandomNum(1000, 2000), 160);
+  trash = createSprite('assets/trash.png', getRandomNum(2000, 3000), 305);
 
   // pie score display
   var pieText = createSprite('assets/pie-score.png', 820, 10);
