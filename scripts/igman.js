@@ -41,12 +41,12 @@ function triggerJump() {
 function jump() {
   if (jumpDir==='up') {
     igor.y -= 7;
-    if (igor.y===80) jumpDir = 'down';
+    if (igor.y===117) jumpDir = 'down';
   }
 
   if (jumpDir==='down') {
-    igor.y += 7;
-    if (igor.y===220) jumping = false;
+    igor.y += 9.5;
+    if (igor.y===250) jumping = false;
   }
 }
 
@@ -73,13 +73,12 @@ function getRandomNum(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-// NOTE: width/3 and height/3 to tighten up hitboxes
 function colliding(a, b) {
   var xDiff = a.position.x - b.position.x;
-  if(xDiff > -a.width/3 && xDiff < a.width/3) {
+  if (xDiff > -a.width/2 && xDiff < a.width/2) {
     var yDiff = a.position.y - b.position.y;
-    if(yDiff > -a.height/3 && yDiff < a.height/3)	{
-  		return true;
+    if (yDiff > -a.height/2 && yDiff < a.height/2) {
+      return true;
     }
   }
 }
