@@ -13,7 +13,7 @@ document.body.appendChild(renderer.view);
 var loader = PIXI.loader.add([
   'assets/background.jpg',
   'assets/sidewalk.jpg',
-  'assets/igor.png',
+  'assets/igor/igor.png',
   'assets/pie.png',
   'assets/trash.png',
   'assets/game-over/game-over.png',
@@ -40,12 +40,14 @@ function triggerJump() {
 // jump event
 function jump() {
   if (jumpDir==='up') {
-    igor.y -= 7;
-    if (igor.y===117) jumpDir = 'down';
+    igor.gotoAndStop(4);
+    igor.y -= 10;
+    if (igor.y===100) jumpDir = 'down';
   }
 
   if (jumpDir==='down') {
-    igor.y += 9.5;
+    igor.y += 10;
+    if (igor.y===150) igor.gotoAndPlay(1);
     if (igor.y===250) jumping = false;
   }
 }
@@ -93,7 +95,7 @@ function setup() {
   var total = createSprite('assets/game-over/total.png', 372.5, 185);
   scoreText = new PIXI.Text('', {fontFamily : 'sans-serif', fontSize: 32, fill : 0xffffff, align : 'center'});
   scoreText.position.set(560, 185);
-  var gameOverPie = createSprite('assets/pie.png', 390, 82);
+  var gameOverPie = createSprite('assets/pie.png', 495, 182);
   restart = createSprite('assets/game-over/restart.png', 277.5, 235);
   gameOverScreen.addChild(gameOverText);
   gameOverScreen.addChild(total);
@@ -107,8 +109,21 @@ function setup() {
   background.scale.set(0.6, 0.6);
   sidewalk = createTilingSprite('assets/sidewalk.jpg', 0, 370);
   sidewalk.scale.set(1, 0.07);
-  igor = createSprite('assets/igor.png', 30, 250);
+
+
+  var igorImages = ['assets/igor/igor.png', 'assets/igor/igor-mid.png', 'assets/igor/igor-alt.png', 'assets/igor/igor-mid.png', 'assets/igor/igor-jump.png'];
+  var textureArray = [];
+  for (var i=0; i < 5; i++) {
+    var texture = PIXI.Texture.fromImage(igorImages[i]);
+    textureArray.push(texture);
+  }
+  igor = new PIXI.MovieClip(textureArray);
   igor.scale.set(0.8, 0.8);
+  igor.position.x = 30;
+  igor.position.y = 250;
+  gameScreen.addChild(igor);
+  igor.animationSpeed = 0.1;
+  igor.play();
 
   pie = createSprite('assets/pie.png', getRandomNum(1000, 2000), 160);
   trash = createSprite('assets/trash.png', getRandomNum(2000, 3000), 305);
@@ -117,7 +132,6 @@ function setup() {
   var pieText = createSprite('assets/pie-score.png', 820, 10);
   scoreDisplay = new PIXI.Text(score, {font: "38px sans-serif", fill: "white"});
   scoreDisplay.position.set(910, 7);
-  gameScreen.addChild(pieText);
   gameScreen.addChild(scoreDisplay);
 
   // start render loop
@@ -145,6 +159,9 @@ function setGameOver() {
 
 // game state update
 function play() {
+  // this is a janky way to skip the jump frame
+  if (igor.currentFrame===3) igor.gotoAndPlay(0);
+
   background.tilePosition.x -= 4;
   sidewalk.tilePosition.x -= 15;
 
