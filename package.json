@@ -10,8 +10,15 @@
     "type": "git",
     "url": "git+https://github.com/deronjohnson/igman.git"
   },
+  "scripts": {
+    "webpack": "webpack --config webpack.config.js --progress --colors --watch",
+    "watch": "npm run webpack"
+  },
   "devDependencies": {
-    "browser-sync": "^2.17.5"
+    "browser-sync": "^2.17.5",
+    "browser-sync-webpack-plugin": "^1.1.3",
+    "json-loader": "^0.5.4",
+    "webpack": "^1.14.0"
   },
   "dependencies": {
     "pixi.js": "^4.3.0"

@@ -1,3 +1,5 @@
+var PIXI = require('pixi.js');
+
 var background, sidewalk, igor, pie, trash,
     jumping, jumpDir, score = 0, scoreDisplay,
     scoreText, restart, state, blinkTimer = 0,
