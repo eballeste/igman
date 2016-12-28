@@ -34,13 +34,13 @@ export default class IgMan extends PIXI.Sprite{
   	this.currentFrame = 0;
   	this.jumpingUp = true;
   	this.jumping = true;
+  	this.texture = PIXI.Texture.fromImage(IGOR_JUMP);
   	this.running = false;
   }
 
   _processJump(){
 
   	if (this.jumpingUp) {
-	    this.texture = PIXI.Texture.fromImage(IGOR_JUMP);
 	    this.position.y -= 10;
 	    if (this.position.y===100) { this.jumpingUp = false; }
 	  }
