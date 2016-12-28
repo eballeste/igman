@@ -22,7 +22,11 @@ module.exports = {
       	test: /\.js$/, 
       	exclude: /node_modules/, 
       	loader: 'babel-loader',
-      	query: {	presets:['es2015']	} 
+      	query: 
+          {	
+            presets:['es2015'],
+            plugins:['transform-class-properties']	
+          } 
       },
       { 
         test: /\.jpe?g$|\.svg$|\.png$/, 
