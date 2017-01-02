@@ -7,8 +7,7 @@ export default class Sidewalk extends PIXI.extras.TilingSprite{
     super(texture, 1200, 800);
 
     this.scale.set(1, 0.7);
-  	this.position.x = 0;
-  	this.position.y = 370;
+  	this.position.set(0, 370);
   }
 
   update(delta){

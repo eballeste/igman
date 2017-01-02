@@ -1,17 +1,19 @@
 import * as PIXI from 'pixi.js';
-import keyboard from '../plugins/pixi-keyboard/index';
 import IGOR from '../../assets/igor/igor.png';
 import IGOR_MID from '../../assets/igor/igor-mid.png';
 import IGOR_ALT from '../../assets/igor/igor-alt.png';
 import IGOR_JUMP from '../../assets/igor/igor-jump.png';
+import ToolBox from '../plugins/toolbox/ToolBox';
+
 
 export default class IgMan extends PIXI.Sprite{
   constructor(){
   	super(PIXI.Texture.fromImage(IGOR));
+
+    this.tools = new ToolBox();
   
     this.scale.set(0.8, 0.8);
-  	this.position.x = 30;
-  	this.position.y = 250;
+  	this.position.set(30,250);
 
   	this.running = true;
   	this.animationSpeed = 0.3;
@@ -38,6 +40,20 @@ export default class IgMan extends PIXI.Sprite{
   	this.running = false;
   }
 
+  eats(food, points){
+    if(this.tools.isColliding(this, food)){
+      food.eaten();
+      points.increased();
+    }
+  }
+
+  crashes(object, parent){
+    if(this.tools.isColliding(this, object)){
+      return true;
+    }
+    return false;
+  }
+
   _processJump(){
 
   	if (this.jumpingUp) {
@@ -51,6 +67,17 @@ export default class IgMan extends PIXI.Sprite{
 	    if (this.position.y===250) { this.jumping = false; }
 	  }
 
+  }
+
+  reset(){
+    this.running = true;
+    this.animationSpeed = 0.3;
+    this.frametime = 0;
+    this.currentFrame = 0;
+
+    this.jumping = false;
+    this.jumpingUp = true;
+    this.position.y = 250;
   }
 
   update(delta){

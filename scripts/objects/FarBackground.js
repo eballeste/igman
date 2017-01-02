@@ -6,8 +6,7 @@ export default class FarBackground extends PIXI.extras.TilingSprite{
     super(PIXI.Texture.fromImage(FAR_BG), 1400, 900);
 
     this.scale.set(1, 0.6);
-  	this.position.x = 0;
-  	this.position.y = -40;
+  	this.position.set(0, -40);
   }
 
   update(delta){
