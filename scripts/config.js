@@ -3,6 +3,6 @@ export default {
   height: 400,
   webgl: true,
   rendererOptions: {
-    backgroundColor : 0xffffff
+    backgroundColor : 0x000000
   }
 };
