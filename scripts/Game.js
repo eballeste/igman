@@ -30,11 +30,6 @@ export default class Game {
     });
   }
 
-  processSpaceBar(){
-    console.log(this);
-    
-  }
-
   update(){
     if(this.level.isOver){
       this.over.totalPoints = this.level.totalPoints;

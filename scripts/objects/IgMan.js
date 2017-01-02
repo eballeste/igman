@@ -47,7 +47,7 @@ export default class IgMan extends PIXI.Sprite{
     }
   }
 
-  crashes(object, parent){
+  crashes(object){
     if(this.tools.isColliding(this, object)){
       return true;
     }
