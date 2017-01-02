@@ -3,7 +3,7 @@ var webpack = require('webpack');
 var BrowserSyncPlugin = require('browser-sync-webpack-plugin');
 
 module.exports = {
-  entry: ['pixi.js', './scripts/setup.js'],
+  entry: ['pixi.js', './scripts/bootstrap.js'],
   output: { filename: 'build/igman.js' },
   plugins: [
     new BrowserSyncPlugin({
