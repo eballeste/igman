@@ -1,5 +1,9 @@
 import * as PIXI from 'pixi.js';
 import FarBackground from './objects/FarBackground';
+import MidBackgroundBack from './objects/MidBackgroundBack';
+import MidBackgroundMid from './objects/MidBackgroundMid';
+import MidBackgroundFront from './objects/MidBackgroundFront';
+import FrontBackground from './objects/FrontBackground';
 import Sidewalk from './objects/Sidewalk';
 import IgMan from './objects/IgMan';
 import Pie from './objects/Pie';
@@ -11,6 +15,10 @@ export default class GameLevel extends PIXI.Container{
 		super();
 
 		this.FAR_BG = new FarBackground();
+		this.MID_BG_BACK = new MidBackgroundBack();
+		this.MID_BG_MID = new MidBackgroundMid();
+		this.MID_BG_FRONT = new MidBackgroundFront();
+		this.FRONT_BG = new FrontBackground();
 		this.SCORE = new Score();
 		this.SIDEWALK = new Sidewalk();
 		this.PIE = new Pie();
@@ -20,6 +28,10 @@ export default class GameLevel extends PIXI.Container{
 		this.over = false;
 
 		this.addChild(this.FAR_BG);
+		this.addChild(this.MID_BG_BACK);
+		this.addChild(this.MID_BG_MID);
+		this.addChild(this.MID_BG_FRONT);
+		this.addChild(this.FRONT_BG);
 		this.addChild(this.SCORE);
 		this.addChild(this.SIDEWALK);
 		this.addChild(this.PIE);
